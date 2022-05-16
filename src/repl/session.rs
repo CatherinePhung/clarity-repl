@@ -650,21 +650,7 @@ impl Session {
         let contract_name = name.unwrap_or("<stdin>".to_string());
 
         match result {
-            Ok(result) => {
-                for diagnostic in &result.diagnostics {
-                    output.append(&mut diagnostic.output(&contract_name, &formatted_lines));
-                }
-                if result.events.len() > 0 {
-                    output.push(black!("Events emitted"));
-                    for event in result.events.iter() {
-                        output.push(black!(format!("{}", event)));
-                    }
-                }
-                if let Some(ref result) = result.result {
-                    output.push(green!(format!("{}", result)));
-                }
-                Ok((output, result))
-            }
+            Ok(result) => Ok((output, result)),
             Err(diagnostics) => {
                 for d in diagnostics {
                     output.append(&mut d.output(&contract_name, &formatted_lines));
